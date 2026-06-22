@@ -499,12 +499,68 @@ tr:last-child td{border-bottom:none}
   <!-- TABS -->
   <div class="tabs">
     <button class="tab on" onclick="switchTab('overview',this)">📊 النظرة العامة</button>
+    <button class="tab" onclick="switchTab('today',this)">🎯 متابعة اليوم</button>
     <button class="tab" onclick="switchTab('analysis',this)">🔬 التحليلات</button>
     <button class="tab" onclick="switchTab('records',this)">📋 السجل الكامل</button>
     <button class="tab" onclick="switchTab('calls',this)">📞 مكالمات عدم الرد</button>
     <button class="tab" onclick="switchTab('feedback',this)">⭐ فيدباك</button>
     <button class="tab" onclick="switchTab('laser',this)">🔧 تقرير قسم الليزر</button>
     <button class="tab" onclick="switchTab('contacts',this)">📊 سجل المراجعين</button>
+    <button class="tab" onclick="switchTab('msgs',this)">💬 تقرير المسجات</button>
+  </div>
+
+  <!-- ══ TAB: متابعة اليوم ══ -->
+  <div class="tab-content" id="tab-today">
+    <!-- ═══════ متابعة اليوم + قائمة الاتصال ═══════ -->
+    <div class="card" id="FOLLOWUP_CARD" style="margin-bottom:12px;border:1px solid var(--pur);background:linear-gradient(180deg,rgba(168,85,247,.06),transparent)">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+        <div>
+          <div class="ct" style="margin:0">🎯 متابعة اليوم</div>
+          <div class="cs" style="margin:0">الحالات اللي تحتاج إجراء — اضغط أي تنبيه يعرض قائمته</div>
+        </div>
+        <div id="FU_DATE" style="font-size:11px;color:var(--txt3);font-weight:700"></div>
+      </div>
+      <div id="FU_ALERTS" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:8px;margin-bottom:12px"></div>
+      <div style="font-size:11px;color:var(--txt3);margin-bottom:6px" id="FU_LISTTITLE">القائمة:</div>
+      <div style="overflow:auto;max-height:520px;border:1px solid var(--br);border-radius:8px">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap">
+          <thead><tr style="background:var(--s2);position:sticky;top:0;z-index:1">
+            <th style="padding:8px 12px;text-align:right;font-size:10px;font-weight:800;color:var(--txt3)">المراجعة</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--txt3)">الهاتف</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--txt3)">القسم</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--txt3)">النوع</th>
+            <th style="padding:8px 12px;text-align:right;font-size:10px;font-weight:800;color:var(--txt3)">السبب</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--txt3)">التاريخ</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--txt3)">إجراء</th>
+          </tr></thead>
+          <tbody id="FU_BODY"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ تقييم المخاطر 🚦 (نُقل لتبويب المتابعة) ═══ -->
+    <div class="card" id="RISK_CARD" style="margin-bottom:12px;border:1px solid var(--red);background:linear-gradient(180deg,rgba(239,68,68,.05),transparent)">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+        <div>
+          <div class="ct" style="margin:0">🚦 تقييم مخاطر المراجعين</div>
+          <div class="cs" style="margin:0">الخطورة = غير مؤكد + غير محجوز + مصدر حجز عالي الغياب + تكرار الغياب</div>
+        </div>
+      </div>
+      <div id="RISK_CARDS" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;max-width:560px"></div>
+      <div style="font-size:11px;color:var(--txt3);margin-bottom:6px" id="RISK_LISTTITLE">🔴 الحالات عالية الخطورة (تحتاج متابعة فورية):</div>
+      <div style="overflow:auto;max-height:380px;border:1px solid var(--br);border-radius:8px">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap">
+          <thead><tr style="background:var(--s2);position:sticky;top:0;z-index:1">
+            <th style="padding:8px 12px;text-align:right;font-size:10px;font-weight:800;color:var(--txt3)">المراجعة</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--txt3)">الهاتف</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--txt3)">القسم</th>
+            <th style="padding:8px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--txt3)">المصدر</th>
+            <th style="padding:8px 12px;text-align:right;font-size:10px;font-weight:800;color:var(--txt3)">أسباب الخطورة</th>
+          </tr></thead>
+          <tbody id="RISK_BODY"></tbody>
+        </table>
+      </div>
+    </div>
   </div>
 
   <!-- ══ TAB 1: OVERVIEW ══ -->
@@ -516,6 +572,13 @@ tr:last-child td{border-bottom:none}
       <div class="kpi nos"><div class="ki">🚫</div><div class="kl">No Show</div><div class="kv" id="K_NOS">—</div><div class="ks" id="K_NOS_P">—</div></div>
       <div class="kpi rec"><div class="ki">✅</div><div class="kl">إعادة الحجز</div><div class="kv" id="K_REC">—</div><div class="ks" id="K_REC_P">معدل الاسترداد</div></div>
       <div class="kpi conf"><div class="ki">⚠️</div><div class="kl">تأكيد بدون حضور</div><div class="kv" id="K_CNS">—</div><div class="ks">Confirmed → No Show</div></div>
+    </div>
+
+    <!-- ═══ المقارنة الشهرية (المرحلة ٤) ═══ -->
+    <div class="card" style="margin-bottom:10px">
+      <div class="ct" style="margin:0">📈 المقارنة الشهرية</div>
+      <div class="cs" id="MOM_SUB" style="margin:0 0 10px">الشهر الحالي مقابل السابق</div>
+      <div id="MOM_EL" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px"></div>
     </div>
 
     <!-- DEPT BREAKDOWN -->
@@ -577,6 +640,25 @@ tr:last-child td{border-bottom:none}
 
   <!-- ══ TAB 2: ANALYSIS ══ -->
   <div class="tab-content" id="tab-analysis">
+
+    <!-- ═══ Heatmap الأيام × الأوقات (المرحلة ٣) ═══ -->
+    <div class="card" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div>
+          <div class="ct" style="margin:0">🔥 خريطة الأوقات الحرجة</div>
+          <div class="cs" style="margin:0">أكثر أيام وأوقات يصير بيها Cancel / No Show — الأغمق = أكثر</div>
+        </div>
+        <select id="HM_TYPE" onchange="renderHeatmap()" style="background:var(--s2);border:1px solid var(--br);border-radius:7px;padding:5px 9px;color:var(--txt);font-size:11px">
+          <option value="all">Cancel + No Show</option>
+          <option value="noshow">No Show فقط</option>
+          <option value="cancel">Cancel فقط</option>
+        </select>
+      </div>
+      <div style="overflow-x:auto;margin-top:12px">
+        <div id="HEATMAP_EL" style="min-width:560px"></div>
+      </div>
+      <div id="HM_PEAK" style="font-size:12px;color:var(--txt2);margin-top:10px"></div>
+    </div>
 
     <div class="g3">
       <!-- جودة الحجز -->
@@ -709,6 +791,7 @@ tr:last-child td{border-bottom:none}
       <div class="kpi top"><div class="ki">🔇</div><div class="kl">مغلق</div><div class="kv" id="CK_OFF">—</div></div>
       <div class="kpi top"><div class="ki">📵</div><div class="kl">مشغول</div><div class="kv" id="CK_BUSY">—</div></div>
       <div class="kpi nos" style="border-color:rgba(168,85,247,.3)"><div class="ki">⏳</div><div class="kl">ممستحقه</div><div class="kv" id="CK_PEND" style="color:var(--pur)">—</div></div>
+      <div class="kpi can"><div class="ki">🚫</div><div class="kl">رفض</div><div class="kv" id="CK_REJ" style="color:var(--red)">—</div></div>
     </div>
 
     <!-- داشبورد تفصيلي — 4 أعمدة -->
@@ -804,6 +887,38 @@ tr:last-child td{border-bottom:none}
       <div class="ct">👥 إحصائيات الموظفات — المكالمات</div>
       <div class="cs">عدد الاتصالات لكل موظفة</div>
       <div id="STAFF_STATS_EL" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-top:10px"></div>
+      <div id="STAFF_DRILL" style="display:none;margin-top:12px;background:var(--s2);border:1px solid var(--purbr);border-radius:12px;padding:14px"></div>
+    </div>
+
+    <!-- ترتيب أداء الموظفات (المرحلة ٢) -->
+    <div class="card" style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div>
+          <div class="ct" style="margin:0">🏆 ترتيب أداء الموظفات</div>
+          <div class="cs" style="margin:0">المكالمات + التثبيت + الفيدباك — اضغط العنوان للترتيب</div>
+        </div>
+        <select id="RANK_BY" onchange="renderStaffRanking()" style="background:var(--s2);border:1px solid var(--br);border-radius:7px;padding:5px 9px;color:var(--txt);font-size:11px">
+          <option value="confirmed">الترتيب: التثبيت</option>
+          <option value="calls">الترتيب: المكالمات</option>
+          <option value="rate">الترتيب: معدل التثبيت</option>
+          <option value="rating">الترتيب: متوسط التقييم</option>
+        </select>
+      </div>
+      <div style="overflow-x:auto;margin-top:10px">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap">
+          <thead><tr style="background:var(--s2)">
+            <th style="padding:9px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--txt3)">#</th>
+            <th style="padding:9px 12px;text-align:right;font-size:10px;font-weight:800;color:var(--txt3)">الموظفة</th>
+            <th style="padding:9px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--blu)">مكالمات</th>
+            <th style="padding:9px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--grn)">تم الرد</th>
+            <th style="padding:9px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--grn)">تثبيت</th>
+            <th style="padding:9px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--ora)">معدل التثبيت</th>
+            <th style="padding:9px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--pur)">فيدباك</th>
+            <th style="padding:9px 12px;text-align:center;font-size:10px;font-weight:800;color:var(--yel)">متوسط التقييم</th>
+          </tr></thead>
+          <tbody id="RANK_BODY"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Calls Table -->
@@ -1113,6 +1228,47 @@ tr:last-child td{border-bottom:none}
 
   </div><!-- /tab-contacts -->
 
+  <!-- ══ TAB 8: DAILY MESSAGES REPORT ══ -->
+  <div class="tab-content" id="tab-msgs">
+
+    <!-- input -->
+    <div class="card" style="margin-bottom:12px">
+      <div class="ct">💬 تقرير المسجات اليومي</div>
+      <div class="cs">الصقي تقرير اليوم نص نفسه (انستا + استفسارات + تثبيت البنات + فيس) واضغطي تحليل.</div>
+      <textarea id="DM_RAW" placeholder="عدد مسجات الانستا ل يوم الأربعاء 209&#10;الليزر 61&#10;الابره الجديده 25&#10;...&#10;** * * * *&#10;مريم 59 ثبتت 36&#10;تقى 53 ثبتت من الواتساب&#10;___________&#10;فيس 19&#10;الليزر 6&#10;..." style="width:100%;min-height:200px;background:var(--s2);border:1px solid var(--br);border-radius:9px;padding:12px;color:var(--txt);font-size:13px;line-height:1.9;resize:vertical"></textarea>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-top:10px">
+        <div>
+          <label style="display:block;font-size:10px;font-weight:700;color:var(--txt2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">تاريخ التقرير</label>
+          <input type="date" id="DM_DATE" style="background:var(--s2);border:1px solid var(--br);border-radius:7px;padding:8px 10px;color:var(--txt);font-size:12px">
+          <span id="DM_DAYHINT" style="font-size:11px;color:var(--grn);font-weight:700;margin-right:8px"></span>
+        </div>
+        <button class="btn btn-p" onclick="dmParse()">تحليل ←</button>
+        <button class="btn" style="background:var(--grnb);color:var(--grn);border:1px solid var(--grnbr)" id="DM_SAVE" onclick="dmSave()" disabled>💾 حفظ في Google Sheets</button>
+        <button class="btn btn-g" onclick="dmSample()">تعبئة بالنموذج</button>
+        <button class="btn btn-g" onclick="dmClear()">مسح</button>
+      </div>
+    </div>
+
+    <!-- dashboard output -->
+    <div id="DM_OUT">
+      <div class="empty">📊 الصقي التقرير واضغطي «تحليل» ليظهر الداشبورد هنا.</div>
+    </div>
+
+    <!-- history -->
+    <div class="tc2" style="margin-top:12px">
+      <div class="tt">
+        <h3>📈 السجل والترند</h3>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <input type="date" id="DM_HFROM" class="srch" style="width:130px">
+          <input type="date" id="DM_HTO" class="srch" style="width:130px">
+          <button class="btn btn-g" onclick="dmHistory()">عرض</button>
+        </div>
+      </div>
+      <div id="DM_HIST" style="padding:14px"><div class="empty">اختاري فترة واضغطي «عرض» لجلب الأيام المخزونة من Google Sheets.</div></div>
+    </div>
+
+  </div><!-- /tab-msgs -->
+
 </main>
 
 <style>
@@ -1134,12 +1290,80 @@ let CHS={};
 let API='';
 let DARK=true;
 let FD='',FT='';
+let CALLS_LOADED=false,FB_LOADED=false,LR_LOADED=false;
+let STAFF_FILTER='';
+let FB_STAFF_FILTER='';
+// أسماء الموظفات المعروفة — أي قيمة غيرها بعمود الموظف تُعتبر «مجهول المصدر»
+const KNOWN_STAFF=['تمارا','زهراء','فاطمة','حنين','تقى','عبير','رانيا','رسل'];
+const UNKNOWN_STAFF='مجهول المصدر';
+function staffOf(v){ const s=(v==null?'':String(v)).trim(); return KNOWN_STAFF.includes(s)?s:UNKNOWN_STAFF; }
+// تصحيح الصفوف المزاحة بالمكالمات: لو «الحالة» فيها تاريخ → الحالة الحقيقية بعمود الموظف، والتاريخ بعمود الحالة، والخدمة بعمود التاريخ
+const CALL_STATUSES=['تم الرد','ثبّت','مغلق','لايوجد رد','مشغول','رفض','ممستحقه'];
+function looksLikeDate(s){ s=String(s||''); return /20\d{2}/.test(s) && !isNaN(Date.parse(s)); }
+function normCallRow(r){
+  const st=String(r.status||'').trim();
+  if(st && CALL_STATUSES.indexOf(st)<0 && looksLikeDate(st)){
+    const d=new Date(st); let iso=st;
+    if(!isNaN(d)){ iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+    return Object.assign({}, r, { service:r.date||'', date:iso, status:String(r.staff||'').trim(), staff:'' });
+  }
+  return r;
+}
 const RC=['#ff4444','#ff8c00','#4f7cff','#a855f7','#00cc88','#ffb800','#00d4ff','#ff4fa8','#f7b84f','#7af77a'];
 
 // ══ الرابط الثابت — غيّريه مرة وحدة هنا ══
 const FIXED_API = 'https://script.google.com/macros/s/AKfycbyt9Dwa_NEDzD_E7IMc0w9KKK16TBjD9oVmdTqS62A9hMD5-utHChOuS681fWol192LEg/exec';
 
-window.onload=()=>{
+// ══ Supabase — طبقة قراءة سريعة (للقراءة فقط؛ الكتابة تبقى عبر Apps Script) ══
+const SB_URL = 'https://kgrchazobpzokdjfarsj.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtncmNoYXpvYnB6b2tkamZhcnNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk3MDcwMTgsImV4cCI6MjA5NTI4MzAxOH0.fuUvOP1uPnRnA-riEAs_fyuakK4zFd_awYxZ56thk5k';
+async function sbGet(table, params=''){
+  const pageSize=1000; let offset=0, all=[];
+  while(true){
+    const r = await fetch(`${SB_URL}/rest/v1/${table}?select=*${params}`, {
+      headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY, 'Range-Unit':'items', Range:`${offset}-${offset+pageSize-1}` }
+    });
+    if(!r.ok) throw new Error('sb '+r.status);
+    const chunk = await r.json();
+    if(!Array.isArray(chunk)) return chunk;
+    all = all.concat(chunk);
+    if(chunk.length < pageSize) break;
+    offset += pageSize;
+    if(offset>60000) break;
+  }
+  return all;
+}
+// فحص مرة وحدة عند الإقلاع: نشغّل Supabase فقط إذا فيه بيانات (بعد المزامنة) — للسرعة.
+let SB_ON=false;
+async function sbProbe(){
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/ct_cases?select=id&limit=1`, { headers:{ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY } });
+    const j=await r.json(); SB_ON=Array.isArray(j)&&j.length>0;
+  }catch(_){ SB_ON=false; }
+}
+// ══ كتابة مباشرة لـ Supabase (ظهور فوري قبل المزامنة) — الشيت يبقى المصدر، والمزامنة توفّق ══
+async function sbWrite(method, table, qs, body){
+  try{
+    const H={ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY };
+    if(body){ H['Content-Type']='application/json'; H['Prefer']='return=minimal'; }
+    const r=await fetch(`${SB_URL}/rest/v1/${table}${qs||''}`, { method, headers:H, body: body?JSON.stringify(body):undefined });
+    return r.ok;
+  }catch(e){ console.log('sbWrite '+table, e); return false; }
+}
+function sbInsert(table,row){ return sbWrite('POST',table,'',Array.isArray(row)?row:[row]); }
+function sbDelRow(table,rowIndex){ const v=String(rowIndex==null?'':rowIndex); if(!v||v==='0')return Promise.resolve(false); return sbWrite('DELETE',table,`?rowIndex=eq.${encodeURIComponent(v)}`); }
+function sbPatchRow(table,rowIndex,patch){ const v=String(rowIndex==null?'':rowIndex); if(!v||v==='0')return Promise.resolve(false); return sbWrite('PATCH',table,`?rowIndex=eq.${encodeURIComponent(v)}`,patch); }
+async function loadRows(table, action){
+  if(SB_ON){
+    try{ const rows=await sbGet(table,'&order=id.desc'); if(rows&&rows.length) return rows; }catch(_){}
+  }
+  const r=await fetch(`${API}?action=${action}&t=${Date.now()}`);
+  const j=await r.json();
+  if(j.error) throw new Error(j.error);
+  return j.rows||[];
+}
+
+window.onload=async ()=>{
   document.getElementById('m_date').value=iso();
   const rdEl=document.getElementById('REPORT_DATE');if(rdEl)rdEl.value=iso();
   const cdEl=document.getElementById('C_DATE');if(cdEl)cdEl.value=iso();
@@ -1147,6 +1371,7 @@ window.onload=()=>{
   if(th==='light'){DARK=false;document.documentElement.setAttribute('data-theme','light');document.getElementById('THM').textContent='☀️';}
   // استخدم الرابط الثابت دائماً — يشتغل على كل الأجهزة
   API = FIXED_API;
+  await sbProbe();
   fetchData();
   setInterval(()=>{if(API)fetchData(true);},120000);
 };
@@ -1174,19 +1399,19 @@ function switchTab(id,btn){
   btn.classList.add('on');
   document.getElementById('tab-'+id).classList.add('on');
   if(id==='calls') loadCalls();
+  else if(id==='today') setTimeout(()=>{renderFollowup();renderRisk();},60);
   else if(id==='feedback') loadFeedback();
-  else if(id==='laser'){loadCalls();loadLaserReport();}
-  else if(id==='contacts'){loadCalls();loadFeedback();setTimeout(renderContactsTable,500);}
-  else setTimeout(()=>renderCharts(),50);
+  else if(id==='laser') loadLaserReport();
+  else if(id==='contacts') loadContacts();
+  else if(id==='msgs'){dmInit();}
+  else if(id==='analysis') setTimeout(()=>{renderCharts();renderAnalysis();},60);
+  else setTimeout(()=>renderCharts(),60);
 }
 
 async function fetchData(silent=false){
   if(!silent)showLD('جاري تحميل البيانات...');
   try{
-    const r=await fetch(`${API}?action=getData&t=${Date.now()}`);
-    const j=await r.json();
-    if(j.error)throw new Error(j.error);
-    ALL=j.rows||[];
+    ALL=await loadRows('ct_cases','getData');
     FILTERED=[...ALL];
     document.getElementById('SYNC').textContent=new Date().toLocaleTimeString('ar-IQ');
     setConn(true);
@@ -1196,7 +1421,7 @@ async function fetchData(silent=false){
   }catch(e){hideLD();setConn(false);toast('❌ '+e.message,'err');}
 }
 
-async function refreshData(){fetchData();}
+async function refreshData(){ CALLS_LOADED=false; FB_LOADED=false; LR_LOADED=false; fetchData(); }
 
 function setFil(key,val,btn){
   if(key==='dev'){
@@ -1217,8 +1442,8 @@ function applyFilters(){
   const q=(document.getElementById('SEARCH')||{}).value?.toLowerCase()||'';
 
   FILTERED=ALL.filter(r=>{
-    if(FD&&r.device!==FD)return false;
-    if(FT&&r.caseType!==FT)return false;
+    if(FD&&!(r.device||'').includes(FD))return false;
+    if(FT&&!(r.caseType||'').includes(FT))return false;
     if(dept&&r.department!==dept)return false;
 
     // Date filter
@@ -1231,8 +1456,8 @@ function applyFilters(){
     }
 
     if(q&&
-      !r.patientName.toLowerCase().includes(q)&&
-      !r.mainReason.toLowerCase().includes(q)&&
+      !(r.patientName||'').toLowerCase().includes(q)&&
+      !(r.mainReason||'').toLowerCase().includes(q)&&
       !(r.device||'').toLowerCase().includes(q)
     )return false;
 
@@ -1360,7 +1585,210 @@ const gc=()=>DARK?'rgba(48,54,61,.4)':'rgba(208,215,222,.5)';
 function dk(id){if(CHS[id]){CHS[id].destroy();delete CHS[id];}}
 const CD={responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:tc(),font:{family:'Tajawal',size:11}}}}};
 
+// ── المقارنة الشهرية (المرحلة ٤) ──
+function renderMonthCompare(){
+  const el=document.getElementById('MOM_EL'); if(!el)return;
+  const data=ALL||[];
+  const isNoShow=r=>/no\s*show/i.test(String(r.caseType||''));
+  const isCancel=r=>/cancel|إلغاء|الغاء/i.test(String(r.caseType||''));
+  const isRebook=r=>String(r.rebooked||'').trim()==='نعم';
+  // اجمع حسب الشهر YYYY-MM
+  const months={};
+  data.forEach(r=>{const iso=toISO(r.date); if(!iso)return; const m=iso.slice(0,7);
+    (months[m]=months[m]||{tot:0,can:0,nos:0,reb:0}); months[m].tot++;
+    if(isCancel(r))months[m].can++; if(isNoShow(r))months[m].nos++; if(isRebook(r))months[m].reb++;});
+  const keys=Object.keys(months).sort();
+  if(keys.length<1){ el.innerHTML='<div style="color:var(--txt3);font-size:12px">لا بيانات كافية</div>'; return; }
+  const cur=months[keys[keys.length-1]]||{tot:0,can:0,nos:0,reb:0};
+  const prev=months[keys[keys.length-2]]||{tot:0,can:0,nos:0,reb:0};
+  const arName=m=>{const M=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر']; const p=m.split('-'); return M[parseInt(p[1],10)-1]+' '+p[0];};
+  const sub=document.getElementById('MOM_SUB');
+  if(sub) sub.textContent=keys.length>1?`${arName(keys[keys.length-1])} مقابل ${arName(keys[keys.length-2])}`:`${arName(keys[keys.length-1])} (لا يوجد شهر سابق للمقارنة)`;
+  // لبعض المؤشرات الزيادة سيئة (Cancel/NoShow) والبعض جيدة (إعادة الحجز)
+  const metrics=[
+    {l:'الحالات',cur:cur.tot,prev:prev.tot,goodUp:false,color:'var(--txt)'},
+    {l:'Cancel',cur:cur.can,prev:prev.can,goodUp:false,color:'var(--red)'},
+    {l:'No Show',cur:cur.nos,prev:prev.nos,goodUp:false,color:'var(--ora)'},
+    {l:'إعادة الحجز',cur:cur.reb,prev:prev.reb,goodUp:true,color:'var(--grn)'},
+  ];
+  el.innerHTML=metrics.map(m=>{
+    const diff=m.cur-m.prev;
+    const pct=m.prev?Math.round(diff/m.prev*100):(m.cur?100:0);
+    const up=diff>0, flat=diff===0;
+    const good = flat?null : (m.goodUp? up : !up);
+    const arrow= flat?'—': (up?'▲':'▼');
+    const dc= good===null?'var(--txt3)': (good?'var(--grn)':'var(--red)');
+    return `<div style="background:var(--s2);border:1px solid var(--br);border-radius:10px;padding:11px">
+      <div style="font-size:11px;color:var(--txt3);margin-bottom:5px">${m.l}</div>
+      <div style="display:flex;align-items:baseline;gap:8px">
+        <div style="font-family:var(--font2);font-size:24px;font-weight:900;color:${m.color}">${m.cur}</div>
+        <div style="font-size:12px;font-weight:800;color:${dc}">${arrow} ${flat?'':(Math.abs(pct)+'%')}</div>
+      </div>
+      <div style="font-size:10px;color:var(--txt3);margin-top:3px">الشهر السابق: ${m.prev}</div>
+    </div>`;}).join('');
+}
+
+function renderMonthCompare_unused(){}
+
+let FU_FILTER='call';
+// ── تقييم المخاطر 🚦 ──
+const SOURCE_RISK={'كول سنتر':70,'واتساب':61,'طبي':67,'بيج':52,'رسبشن':40,'قسم الليزر':18};
+function renderRisk(){
+  const body=document.getElementById('RISK_BODY'); if(!body)return;
+  const data=ALL||[];
+  const t=x=>(x==null?'':String(x)).trim();
+  // تكرار الغياب لكل مراجعة (بالاسم)
+  const freq={};
+  data.forEach(r=>{const n=t(r.patientName); if(n)freq[n]=(freq[n]||0)+1;});
+  const scored=data.filter(r=>t(r.status)==='مفتوحة').map(r=>{
+    let s=0; const why=[];
+    if(t(r.confirmed)==='لا'){ s+=2; why.push('غير مؤكد'); }
+    if(t(r.rebooked)==='لا'){ s+=1; why.push('غير محجوز'); }
+    const src=t(r.bookingSource); const sr=SOURCE_RISK[src]||0;
+    if(sr>=60){ s+=2; why.push('مصدر عالي الغياب ('+src+' '+sr+'%)'); }
+    else if(sr>=45){ s+=1; why.push('مصدر متوسط ('+src+')'); }
+    const rep=freq[t(r.patientName)]||1;
+    if(rep>=3){ s+=2; why.push('تكرّر '+rep+' مرات'); }
+    else if(rep===2){ s+=1; why.push('تكرّر مرتين'); }
+    return {r, s, why, level: s>=4?'high':(s>=2?'mid':'low')};
+  });
+  const high=scored.filter(x=>x.level==='high');
+  const mid=scored.filter(x=>x.level==='mid');
+  const low=scored.filter(x=>x.level==='low');
+  const cards=[
+    {l:'🔴 عالي الخطورة', n:high.length, c:'var(--red)', bg:'rgba(239,68,68,.1)'},
+    {l:'🟠 متوسط', n:mid.length, c:'var(--ora)', bg:'rgba(255,159,67,.1)'},
+    {l:'🟢 منخفض', n:low.length, c:'var(--grn)', bg:'rgba(34,197,94,.1)'},
+  ];
+  const rc=document.getElementById('RISK_CARDS');
+  if(rc) rc.innerHTML=cards.map(c=>`
+    <div style="background:${c.bg};border:1px solid ${c.c};border-radius:10px;padding:11px;text-align:center">
+      <div style="font-size:11px;font-weight:700;color:${c.c};margin-bottom:5px">${c.l}</div>
+      <div style="font-family:var(--font2);font-size:26px;font-weight:900;color:var(--txt)">${c.n}</div>
+      <div style="font-size:10px;color:var(--txt3)">مراجعة</div>
+    </div>`).join('');
+  const lt=document.getElementById('RISK_LISTTITLE');
+  if(lt) lt.innerHTML=`🔴 الحالات عالية الخطورة — <b style="color:var(--red)">${high.length}</b> (تحتاج متابعة فورية)`;
+  const rows=high.sort((a,b)=>b.s-a.s);
+  if(!rows.length){ body.innerHTML='<tr><td colspan="5" style="padding:18px;text-align:center;color:var(--txt3)">ما في حالات عالية الخطورة 👌</td></tr>'; return; }
+  body.innerHTML=rows.slice(0,150).map(x=>{
+    const r=x.r; const ph=t(r.phone).replace(/[^\d]/g,'');
+    const wa=ph?`<a href="https://wa.me/964${ph.replace(/^0+/,'')}" target="_blank" style="color:var(--grn);text-decoration:none">📱 ${t(r.phone)}</a>`:'<span style="color:var(--txt3)">—</span>';
+    return `<tr style="border-top:1px solid var(--br)">
+      <td style="padding:8px 12px;font-weight:600">${t(r.patientName)||'—'}</td>
+      <td style="padding:8px 12px;text-align:center">${wa}</td>
+      <td style="padding:8px 12px;text-align:center;color:var(--txt2)">${t(r.department)||'—'}</td>
+      <td style="padding:8px 12px;text-align:center;color:var(--txt2)">${t(r.bookingSource)||'—'}</td>
+      <td style="padding:8px 12px;color:var(--ora);font-size:11px">${x.why.join(' • ')}</td>
+    </tr>`;}).join('')+(rows.length>150?`<tr><td colspan="5" style="padding:10px;text-align:center;color:var(--txt3)">عرض أول ١٥٠ من ${rows.length}</td></tr>`:'');
+}
+
+// ── إجراء سريع من قائمة المتابعة (كتابة مزدوجة: Supabase فوراً + الشيت دائم) ──
+async function fuAction(rowIndex, kind){
+  const ri=String(rowIndex||''); if(!ri||ri==='0'){ toast('⚠️ هذا الصف جديد — حدّثي الصفحة بعد المزامنة','warn'); return; }
+  const rec=(ALL||[]).find(x=>String(x.rowIndex)===ri);
+  let patch={}, params={action:'updateRow', rowIndex:ri}, okMsg='';
+  if(kind==='booked'){
+    const next=prompt('تاريخ الموعد الجديد (اختياري) — مثال 2026-06-25:','');
+    patch={rebooked:'نعم', status:'مغلقة'}; params.rebooked='نعم'; params.status='مغلقة';
+    if(next&&next.trim()){ patch.nextAppt=next.trim(); params.nextAppt=next.trim(); }
+    okMsg='✅ تم الحجز — نزلت من القائمة';
+  } else if(kind==='noreply'){
+    const note='محاولة اتصال '+iso()+' — لا يرد';
+    const prev=rec?String(rec.notes||''):'';
+    patch={notes:(prev?prev+' | ':'')+note}; params.notes=patch.notes;
+    okMsg='📞 تسجّلت محاولة (لا يرد)';
+  } else if(kind==='closed'){
+    if(!confirm('إغلاق الحالة (رفض/ملغاة)؟'))return;
+    patch={status:'مغلقة'}; params.status='مغلقة';
+    okMsg='❌ تم إغلاق الحالة';
+  } else return;
+  // تحديث محلي فوري
+  if(rec){ Object.assign(rec, patch); }
+  renderFollowup(); renderRisk();
+  // Supabase فوراً
+  try{ await sbPatchRow('ct_cases', ri, patch); }catch(_){}
+  // الشيت (دائم) بالخلفية
+  try{ fetch(API+'?'+new URLSearchParams(params).toString()).catch(()=>{}); }catch(_){}
+  toast(okMsg,'ok');
+}
+
+function renderFollowup(){
+  const body=document.getElementById('FU_BODY'); if(!body)return;
+  const data=ALL||[];
+  const t=x=>(x==null?'':String(x)).trim();
+  const isOpen=r=>t(r.status)==='مفتوحة';
+  const isNoShow=r=>/no\s*show/i.test(t(r.caseType));
+  const isCancel=r=>/cancel|إلغاء|الغاء/i.test(t(r.caseType));
+  const today=new Date(); const wk=new Date(today.getTime()-7*864e5);
+  const inWeek=r=>{const iso=toISO(r.date); if(!iso)return false; const d=new Date(iso); return d>=wk&&d<=today;};
+  // تكرار الغياب للأولوية
+  const freq={}; data.forEach(r=>{const n=t(r.patientName); if(n)freq[n]=(freq[n]||0)+1;});
+  const prio=r=>{ let s=0;
+    if(t(r.confirmed)==='لا')s+=2; if(t(r.rebooked)==='لا')s+=1;
+    const sr=(SOURCE_RISK||{})[t(r.bookingSource)]||0; if(sr>=60)s+=2; else if(sr>=45)s+=1;
+    const rep=freq[t(r.patientName)]||1; if(rep>=3)s+=2; else if(rep===2)s+=1;
+    if(isNoShow(r))s+=1; return s; };
+  const lists={
+    call:    data.filter(r=>(isNoShow(r)||isCancel(r)) && isOpen(r) && t(r.rebooked)!=='نعم'),
+    rebook:  data.filter(r=>isOpen(r) && t(r.rebooked)==='لا'),
+    unconf:  data.filter(r=>t(r.confirmed)==='لا'),
+    noshow:  data.filter(r=>isNoShow(r) && inWeek(r)),
+  };
+  const alerts=[
+    {key:'call',   icon:'📞', label:'للاتصال اليوم (No Show + Cancel)', color:'var(--grn)'},
+    {key:'rebook', icon:'🔴', label:'تحتاج إعادة حجز', color:'var(--red)'},
+    {key:'unconf', icon:'🟠', label:'غير مؤكدة',       color:'var(--ora)'},
+    {key:'noshow', icon:'🚫', label:'No Show (آخر ٧ أيام)', color:'var(--pur)'},
+  ];
+  const fd=document.getElementById('FU_DATE');
+  if(fd) fd.textContent='اليوم: '+toISO(today);
+  const al=document.getElementById('FU_ALERTS');
+  if(al) al.innerHTML=alerts.map(a=>{
+    const active=FU_FILTER===a.key, n=lists[a.key].length;
+    return `<div onclick="FU_FILTER='${a.key}';renderFollowup()" title="اضغط لعرض القائمة"
+      style="cursor:pointer;background:${active?'var(--s2)':'var(--bg)'};border:1px solid ${active?a.color:'var(--br)'};border-radius:10px;padding:11px;text-align:center;transition:.15s">
+      <div style="font-size:11px;font-weight:700;color:${a.color};margin-bottom:5px">${a.icon} ${a.label}</div>
+      <div style="font-family:var(--font2);font-size:26px;font-weight:900;color:var(--txt)">${n}</div>
+      <div style="font-size:10px;color:var(--txt3)">حالة${active?' • معروضة ✓':''}</div>
+    </div>`;}).join('');
+  const cur=alerts.find(a=>a.key===FU_FILTER)||alerts[0];
+  // قائمة الاتصال مرتبة بالأولوية؛ الباقي بالأحدث
+  let rows=(lists[FU_FILTER]||[]).slice();
+  if(FU_FILTER==='call') rows.sort((a,b)=>prio(b)-prio(a)||(toISO(b.date)||'').localeCompare(toISO(a.date)||''));
+  else rows.sort((a,b)=>(toISO(b.date)||'').localeCompare(toISO(a.date)||''));
+  const lt=document.getElementById('FU_LISTTITLE');
+  if(lt) lt.innerHTML=`${cur.icon} ${cur.label} — <b style="color:var(--txt)">${rows.length}</b> حالة`;
+  if(!rows.length){ body.innerHTML='<tr><td colspan="7" style="padding:18px;text-align:center;color:var(--txt3)">ما في حالات بهذه القائمة 👌</td></tr>'; return; }
+  body.innerHTML=rows.slice(0,200).map(r=>{
+    const ph=t(r.phone).replace(/[^\d]/g,''); const intl='964'+ph.replace(/^0+/,'');
+    const nm=t(r.patientName);
+    const msg=encodeURIComponent(`مرحباً ${nm} 🌷\nمن عيادة كنزي. لاحظنا موعدج السابق ما تم. نحب نحجزلج موعد جديد يناسبج 💙\nتحبين نثبتلج موعد هالأسبوع لو تفضلين وقت ثاني؟`);
+    const wa=ph?`<a href="https://wa.me/${intl}?text=${msg}" target="_blank" style="display:inline-block;background:rgba(34,197,94,.12);color:var(--grn);text-decoration:none;padding:3px 8px;border-radius:6px;font-weight:700;font-size:11px">📱 واتساب</a> <a href="tel:${ph}" style="color:var(--txt3);text-decoration:none;font-size:11px">☎</a>`:'<span style="color:var(--txt3)">—</span>';
+    const typeColor=isNoShow(r)?'var(--ora)':'var(--red)';
+    const pr=FU_FILTER==='call'?prio(r):0;
+    const prBadge=pr>=4?'<span style="color:var(--red);font-weight:800">🔴</span> ':pr>=2?'<span style="color:var(--ora);font-weight:800">🟠</span> ':'';
+    const ri=t(r.rowIndex);
+    const act=`<div style="display:flex;gap:4px;justify-content:center;white-space:nowrap">
+      <button onclick="fuAction('${ri}','booked')" title="تم الحجز — ينزل من القائمة" style="background:rgba(34,197,94,.15);color:var(--grn);border:1px solid var(--grn);border-radius:6px;padding:3px 7px;font-size:11px;font-weight:700;cursor:pointer">✅ حُجز</button>
+      <button onclick="fuAction('${ri}','noreply')" title="لا يرد — يسجّل محاولة" style="background:rgba(255,159,67,.12);color:var(--ora);border:1px solid var(--ora);border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer">📞 لا يرد</button>
+      <button onclick="fuAction('${ri}','closed')" title="رفض/إغلاق" style="background:rgba(239,68,68,.12);color:var(--red);border:1px solid var(--red);border-radius:6px;padding:3px 7px;font-size:11px;cursor:pointer">❌</button>
+    </div>`;
+    return `<tr style="border-top:1px solid var(--br)">
+      <td style="padding:8px 12px;font-weight:600">${prBadge}${nm||'—'}</td>
+      <td style="padding:8px 12px;text-align:center">${wa}</td>
+      <td style="padding:8px 12px;text-align:center;color:var(--txt2)">${t(r.department)||'—'}</td>
+      <td style="padding:8px 12px;text-align:center"><span style="color:${typeColor};font-weight:700">${t(r.caseType)||'—'}</span></td>
+      <td style="padding:8px 12px;color:var(--txt2);max-width:200px;overflow:hidden;text-overflow:ellipsis">${t(r.bookingSource)||t(r.mainReason)||'—'}</td>
+      <td style="padding:8px 12px;text-align:center;color:var(--txt3)">${fmtDate(r.date)||'—'}</td>
+      <td style="padding:8px 12px">${ri?act:'<span style="color:var(--txt3);font-size:10px">—</span>'}</td>
+    </tr>`;}).join('')+(rows.length>200?`<tr><td colspan="7" style="padding:10px;text-align:center;color:var(--txt3)">عرض أول ٢٠٠ من ${rows.length}</td></tr>`:'');
+}
+
 function renderCharts(){
+  renderFollowup();
+  renderRisk();
+  renderMonthCompare();
   // PIE - all case types
   dk('pie');
   const can=FILTERED.filter(r=>r.caseType==='Cancel').length;
@@ -1422,7 +1850,61 @@ function renderReasons(){
 }
 
 // ── ANALYSIS ──
+// ── Heatmap الأيام × الأوقات (المرحلة ٣) ──
+function apptHour(s){
+  s=String(s||''); const m=s.match(/(\d{1,2}):(\d{2})/); if(!m)return null;
+  let h=parseInt(m[1],10); const pm=/مساء/.test(s), am=/صباح/.test(s);
+  if(pm&&h<12)h+=12; if(am&&h===12)h=0; return h;
+}
+function renderHeatmap(){
+  const el=document.getElementById('HEATMAP_EL'); if(!el)return;
+  const data=ALL||[];
+  const type=document.getElementById('HM_TYPE')?.value||'all';
+  const isNoShow=r=>/no\s*show/i.test(String(r.caseType||''));
+  const isCancel=r=>/cancel|إلغاء|الغاء/i.test(String(r.caseType||''));
+  const pick=r=> type==='noshow'?isNoShow(r) : type==='cancel'?isCancel(r) : (isNoShow(r)||isCancel(r));
+  // أيام الأسبوع (السبت→الجمعة) و فترات الوقت
+  const days=['السبت','الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة'];
+  const dmap=[1,2,3,4,5,6,0]; // getDay() لكل عمود (السبت=6 بالنظام، نرتبه)
+  const dayIdxOf=g=>({6:0,0:1,1:2,2:3,3:4,4:5,5:6})[g];
+  const slots=[{l:'٨–١٠ص',a:8,b:10},{l:'١٠–١٢',a:10,b:12},{l:'١٢–٢م',a:12,b:14},{l:'٢–٤م',a:14,b:16},{l:'٤–٦م',a:16,b:18},{l:'٦–٨م',a:18,b:20},{l:'أخرى',a:-99,b:99}];
+  const grid=days.map(()=>slots.map(()=>0));
+  let max=0, peak={n:0,d:'',s:''}, total=0;
+  data.forEach(r=>{
+    if(!pick(r))return;
+    const iso=toISO(r.date); if(!iso)return;
+    const g=new Date(iso).getDay(); const di=dayIdxOf(g); if(di==null)return;
+    const h=apptHour(r.apptTime);
+    let si=slots.findIndex(s=>h!=null&&h>=s.a&&h<s.b);
+    if(si<0)si=slots.length-1; // أخرى
+    grid[di][si]++; total++;
+    if(grid[di][si]>max){max=grid[di][si];}
+  });
+  // أعلى خلية
+  days.forEach((d,di)=>slots.forEach((s,si)=>{ if(grid[di][si]>peak.n)peak={n:grid[di][si],d:d,s:s.l}; }));
+  const cell=(v)=>{
+    const intensity=max?v/max:0;
+    const bg=v===0?'var(--s2)':`rgba(239,68,68,${(0.12+intensity*0.78).toFixed(2)})`;
+    const col=intensity>0.45?'#fff':'var(--txt)';
+    return `<td style="padding:0;text-align:center"><div style="margin:2px;height:30px;display:flex;align-items:center;justify-content:center;background:${bg};border-radius:6px;color:${col};font-size:12px;font-weight:${v?700:400}">${v||''}</div></td>`;
+  };
+  let html='<table style="width:100%;border-collapse:collapse;font-size:11px"><thead><tr>';
+  html+='<th style="padding:4px 8px;text-align:right;color:var(--txt3);font-size:10px">اليوم \\ الوقت</th>';
+  slots.forEach(s=>html+=`<th style="padding:4px 6px;text-align:center;color:var(--txt3);font-size:10px;font-weight:800">${s.l}</th>`);
+  html+='</tr></thead><tbody>';
+  days.forEach((d,di)=>{
+    html+=`<tr><td style="padding:4px 8px;text-align:right;font-weight:700;color:var(--txt2);white-space:nowrap">${d}</td>`;
+    slots.forEach((s,si)=>html+=cell(grid[di][si]));
+    html+='</tr>';
+  });
+  html+='</tbody></table>';
+  el.innerHTML=html;
+  const pk=document.getElementById('HM_PEAK');
+  if(pk) pk.innerHTML = total ? `🔴 أعلى وقت حرج: <b style="color:var(--red)">${peak.d} ${peak.s}</b> (${peak.n} حالة) — إجمالي ${total} حالة` : 'لا بيانات كافية لعرض الخريطة.';
+}
+
 function renderAnalysis(){
+  renderHeatmap();
   renderSourceQuality();
   renderConfirmedNoShow();
   renderRecovery();
@@ -1642,6 +2124,7 @@ async function submitEntry(){
     if(json.success){
       ALL.unshift({...entry,id:ALL.length+1});
       FILTERED=[...ALL];
+      sbInsert('ct_cases',{...entry,rowIndex:''});
       closeModal();renderAll();
       toast('✅ تم الحفظ في Google Sheets','ok');
       resetMod();
@@ -1698,24 +2181,116 @@ let LR_DATA=[];
 function renderStaffStats(){
   const el=document.getElementById('STAFF_STATS_EL');
   if(!el)return;
-  const staffList=['تمارا','زهراء','فاطمة','حنين','تقى','عبير','رانيا','رسل'];
   const counts={};
-  CALLS_DATA.forEach(r=>{if(r.staff)counts[r.staff]=(counts[r.staff]||0)+1;});
-  el.innerHTML=staffList.map(name=>`
-    <div style="background:var(--s2);border:1px solid var(--br);border-radius:10px;padding:12px;text-align:center">
-      <div style="font-size:11px;font-weight:700;color:var(--pur);margin-bottom:6px">👤 ${name}</div>
+  CALLS_DATA.forEach(r=>{const k=staffOf(r.staff);counts[k]=(counts[k]||0)+1;});
+  // كروت الموظفات المعروفات + كرت مجهول المصدر بالنهاية
+  const list=KNOWN_STAFF.concat([UNKNOWN_STAFF]);
+  el.innerHTML=list.map(name=>{
+    const active=STAFF_FILTER===name;
+    const isUnknown=name===UNKNOWN_STAFF;
+    const accent=isUnknown?'var(--ora)':'var(--pur)';
+    const activeBg=isUnknown?'rgba(255,159,67,.12)':'var(--purb)';
+    return `
+    <div onclick="toggleStaffFilter('${name}')" title="اضغط لعرض ${isUnknown?'المكالمات مجهولة المصدر':'بيانات '+name}"
+      style="cursor:pointer;background:${active?activeBg:'var(--s2)'};border:1px solid ${active?accent:'var(--br)'};border-radius:10px;padding:12px;text-align:center;transition:.15s">
+      <div style="font-size:11px;font-weight:700;color:${accent};margin-bottom:6px">${isUnknown?'❔ '+name:'👤 '+name}</div>
       <div style="font-family:var(--font2);font-size:28px;font-weight:900;color:var(--txt)">${counts[name]||0}</div>
-      <div style="font-size:10px;color:var(--txt3)">مكالمة</div>
-    </div>`).join('');
+      <div style="font-size:10px;color:var(--txt3)">مكالمة${active?' • مفعّل ✓':''}</div>
+    </div>`;}).join('');
+  renderStaffDrill();
+  renderStaffRanking();
 }
 
-async function loadLaserReport(){
+// ترتيب أداء الموظفات (المرحلة ٢) — يدمج المكالمات والفيدباك
+async function renderStaffRanking(){
+  const body=document.getElementById('RANK_BODY'); if(!body)return;
+  if(!FB_LOADED){ try{ await loadFeedback(); }catch(_){} }
+  const t=x=>(x==null?'':String(x)).trim();
+  const ns=s=>normalizeCallStatus(t(s));
+  const rec={}; // per staff
+  KNOWN_STAFF.forEach(n=>rec[n]={calls:0,answered:0,confirmed:0,fb:0,rsum:0,rn:0});
+  (CALLS_DATA||[]).forEach(r=>{
+    const n=staffOf(r.staff); if(n===UNKNOWN_STAFF)return;
+    rec[n].calls++; const st=ns(r.status);
+    if(st==='تم الرد'||st==='ثبّت')rec[n].answered++;
+    if(st==='ثبّت')rec[n].confirmed++;
+  });
+  (FB_DATA||[]).forEach(r=>{
+    const n=staffOf(r.staff); if(n===UNKNOWN_STAFF)return;
+    rec[n].fb++; const v=parseFloat(r.rating); if(!isNaN(v)&&v>0){rec[n].rsum+=v;rec[n].rn++;}
+  });
+  let arr=KNOWN_STAFF.map(n=>{const o=rec[n];return {
+    name:n, calls:o.calls, answered:o.answered, confirmed:o.confirmed,
+    rate:o.calls?o.confirmed/o.calls:0, fb:o.fb, rating:o.rn?o.rsum/o.rn:0
+  };}).filter(x=>x.calls>0||x.fb>0);
+  const by=document.getElementById('RANK_BY')?.value||'confirmed';
+  arr.sort((a,b)=>b[by]-a[by]);
+  const medal=['🥇','🥈','🥉'];
+  body.innerHTML=arr.map((x,i)=>`
+    <tr style="border-top:1px solid var(--br)">
+      <td style="padding:9px 12px;text-align:center;font-weight:800">${medal[i]||(i+1)}</td>
+      <td style="padding:9px 12px;font-weight:700">👤 ${x.name}</td>
+      <td style="padding:9px 12px;text-align:center">${x.calls}</td>
+      <td style="padding:9px 12px;text-align:center;color:var(--grn)">${x.answered}</td>
+      <td style="padding:9px 12px;text-align:center;color:var(--grn);font-weight:800">${x.confirmed}</td>
+      <td style="padding:9px 12px;text-align:center;color:var(--ora);font-weight:700">${(x.rate*100).toFixed(0)}%</td>
+      <td style="padding:9px 12px;text-align:center;color:var(--pur)">${x.fb}</td>
+      <td style="padding:9px 12px;text-align:center;color:var(--yel);font-weight:700">${x.rating?x.rating.toFixed(1):'—'}</td>
+    </tr>`).join('')||'<tr><td colspan="8" style="padding:16px;text-align:center;color:var(--txt3)">لا بيانات</td></tr>';
+}
+
+function toggleStaffFilter(name){
+  STAFF_FILTER=(STAFF_FILTER===name)?'':name;
+  CALLS_PAGE=1;
+  renderStaffStats();
+  renderCallsTable();
+}
+
+function toggleFBStaff(name){
+  FB_STAFF_FILTER=(FB_STAFF_FILTER===name)?'':name;
+  renderFeedbackTable();
+}
+
+async function renderStaffDrill(){
+  const box=document.getElementById('STAFF_DRILL');
+  if(!box)return;
+  if(!STAFF_FILTER){ box.style.display='none'; box.innerHTML=''; return; }
+  const name=STAFF_FILTER;
+  box.style.display='block';
+  if(!FB_LOADED){ try{ await loadFeedback(); }catch(_){} }
+  const cs=CALLS_DATA.filter(r=>staffOf(r.staff)===name);
+  const fb=FB_DATA.filter(r=>staffOf(r.staff)===name);
+  const byStatus={};
+  cs.forEach(r=>{const k=r.status||'—';byStatus[k]=(byStatus[k]||0)+1;});
+  const answered=(byStatus['تم الرد']||0);
+  const confirmed=(byStatus['ثبّت']||0);
+  const ratings=fb.map(r=>parseFloat(r.rating)).filter(n=>!isNaN(n)&&n>0);
+  const avg=ratings.length?(ratings.reduce((a,b)=>a+b,0)/ratings.length).toFixed(1):'—';
+  const chips=Object.entries(byStatus).sort((a,b)=>b[1]-a[1])
+    .map(([k,v])=>`<span class="tg tg-l" style="font-size:11px">${k}: <b>${v}</b></span>`).join(' ');
+  box.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+      <div style="font-size:14px;font-weight:800;color:${name===UNKNOWN_STAFF?'var(--ora)':'var(--pur)'}">${name===UNKNOWN_STAFF?'❔ مكالمات مجهولة المصدر':'📋 ملف الموظفة: '+name}</div>
+      <button class="btn btn-g" onclick="toggleStaffFilter('${name}')">✕ إلغاء الفلتر</button>
+    </div>
+    <div class="kpis" style="grid-template-columns:repeat(auto-fill,minmax(115px,1fr))">
+      <div class="kpi"><div class="kl">مكالمات</div><div class="kv" style="color:var(--blu)">${cs.length}</div></div>
+      <div class="kpi"><div class="kl">تم الرد</div><div class="kv" style="color:var(--grn)">${answered}</div></div>
+      <div class="kpi"><div class="kl">ثبّت</div><div class="kv" style="color:var(--grn)">${confirmed}</div></div>
+      <div class="kpi"><div class="kl">فيدباك</div><div class="kv" style="color:var(--pur)">${fb.length}</div></div>
+      <div class="kpi"><div class="kl">متوسط التقييم</div><div class="kv" style="color:var(--yel)">${avg}</div></div>
+    </div>
+    <div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:6px">${chips||'<span style="color:var(--txt3)">لا مكالمات لهذه الموظفة</span>'}</div>
+    <div style="font-size:11px;color:var(--txt3);margin-top:8px">⬇ الجدول تحت يعرض مكالمات ${name} فقط</div>`;
+}
+
+async function loadLaserReport(force=false){
+  if(LR_LOADED && !force){ renderLaserTable(); return; }
   try{
-    const r=await fetch(`${API}?action=getLaserReport&t=${Date.now()}`);
-    const j=await r.json();
-    if(j.rows)LR_DATA=j.rows;
-    renderLaserTable();
+    LR_DATA=await loadRows('ct_laser','getLaserReport');
+    LR_LOADED=true;
   }catch(e){console.log('laser load error:',e);}
+  renderLaserTable();
 }
 
 async function saveLaserReport(){
@@ -1739,6 +2314,7 @@ async function saveLaserReport(){
   try{
     const params=new URLSearchParams({action:'addLaserReport',...entry});
     await fetch(API+'?'+params.toString());
+    sbInsert('ct_laser',{...entry,rowIndex:''});
   }catch(e){console.error('laser save error:',e);}
   // تنظيف
   ['LR_BOOKED','LR_CHECKOUT','LR_CHECKOUT_EX','LR_NOAPP','LR_LATE','LR_CANCEL','LR_NOSHOW','LR_NOSHOW_LATE','LR_CWI'].forEach(id=>{
@@ -1785,6 +2361,7 @@ async function deleteLaserReport(rowIndex,localId){
   try{
     const params=new URLSearchParams({action:'deleteLaserReport',rowIndex:String(rowIndex)});
     await fetch(API+'?'+params.toString());
+    sbDelRow('ct_laser',rowIndex);
     toast('✅ تم الحذف','ok');
   }catch(e){}
 }
@@ -1876,19 +2453,13 @@ function renderContactsTable(){
   }).join('');
 }
 
-async function loadFeedback(){
-  // تعيين الشهر الحالي افتراضياً
-  const monthEl=document.getElementById('FB_MONTH');
-  if(monthEl&&!monthEl.value){
-    const m=String(new Date().getMonth()+1).padStart(2,'0');
-    monthEl.value=m;
-  }
+async function loadFeedback(force=false){
+  if(FB_LOADED && !force){ renderFeedbackTable(); return; }
   try{
-    const r=await fetch(`${API}?action=getFeedback&t=${Date.now()}`);
-    const j=await r.json();
-    if(j.rows)FB_DATA=j.rows;
-    renderFeedbackTable();
+    FB_DATA=await loadRows('ct_feedback','getFeedback');
+    FB_LOADED=true;
   }catch(e){console.log('feedback load error:',e);}
+  renderFeedbackTable();
 }
 
 async function updateFBRating(idx,val){
@@ -1897,6 +2468,7 @@ async function updateFBRating(idx,val){
     const d=FB_DATA[idx];
     const params=new URLSearchParams({action:'updateFeedback',rowIndex:String(d.rowIndex||0),field:'rating',value:val});
     await fetch(API+'?'+params.toString());
+    sbPatchRow('ct_feedback',d.rowIndex,{rating:val});
   }catch(e){}
 }
 
@@ -1906,6 +2478,7 @@ async function updateFBCallStatus(idx,val){
     const d=FB_DATA[idx];
     const params=new URLSearchParams({action:'updateFeedback',rowIndex:String(d.rowIndex||0),field:'callStatus',value:val});
     await fetch(API+'?'+params.toString());
+    sbPatchRow('ct_feedback',d.rowIndex,{callStatus:val});
   }catch(e){}
 }
 
@@ -1954,6 +2527,7 @@ async function saveFeedback(d){
     const r=await fetch(API+'?'+params.toString());
     const j=await r.json();
     if(j.error)throw new Error(j.error);
+    sbInsert('ct_feedback',{name:d.name||'',dept:d.dept||'',service:d.service||'',provider:d.provider||'',rating:d.rating||'',recommend:d.recommend||'',callStatus:d.callStatus||'تم الرد',staff:d.staff||'',notes:d.notes||'',date:d.date||'',rowIndex:''});
     return true;
   }catch(e){
     console.error('saveFeedback error:',e);
@@ -1969,6 +2543,7 @@ async function deleteFeedback(rowIndex,localId){
   try{
     const params=new URLSearchParams({action:'deleteFeedback',rowIndex:String(rowIndex)});
     await fetch(API+'?'+params.toString());
+    sbDelRow('ct_feedback',rowIndex);
     toast('✅ تم الحذف','ok');
   }catch(e){toast('⚠️ تم الحذف محلياً','warn');}
 }
@@ -1980,9 +2555,10 @@ function renderFeedbackTable(){
   const callF=document.getElementById('FB_CALL_F')?.value||'';
 
   const filtered=FB_DATA.filter(r=>{
+    if(FB_STAFF_FILTER&&(r.staff||'').trim()!==FB_STAFF_FILTER)return false;
     if(q&&!(r.name||'').toLowerCase().includes(q)&&!(r.service||'').toLowerCase().includes(q)&&!(r.provider||'').toLowerCase().includes(q))return false;
-    if(deptF&&r.dept!==deptF)return false;
-    if(callF&&r.callStatus!==callF)return false;
+    if(deptF && !((String(r.dept||'')+' '+String(r.service||'')).includes(deptF)))return false;
+    if(callF){ const cs=String(r.callStatus||'').trim(); if(cs && !cs.includes(callF))return false; }
     if(month){
       const iso=toISO(r.date)||'';
       if(iso){const mo=iso.split('-')[1]||'';if(mo!==month)return false;}
@@ -2015,12 +2591,15 @@ function renderFeedbackTable(){
     Object.keys(counts).forEach(n=>{
       if(!staffList.includes(n)){unmatched+=counts[n];unmatchedNames.push(n+'('+counts[n]+')');}
     });
-    const cards=staffList.map(name=>`
-      <div style="background:var(--s2);border:1px solid var(--br);border-radius:10px;padding:10px;text-align:center">
+    const cards=staffList.map(name=>{
+      const active=FB_STAFF_FILTER===name;
+      return `
+      <div onclick="toggleFBStaff('${name}')" title="اضغط لعرض فيدباك ${name}"
+        style="cursor:pointer;background:${active?'var(--purb)':'var(--s2)'};border:1px solid ${active?'var(--pur)':'var(--br)'};border-radius:10px;padding:10px;text-align:center;transition:.15s">
         <div style="font-size:11px;font-weight:700;color:var(--pur);margin-bottom:4px">👤 ${name}</div>
         <div style="font-family:var(--font2);font-size:26px;font-weight:900;color:var(--txt)">${counts[name]||0}</div>
-        <div style="font-size:10px;color:var(--txt3)">فيدباك</div>
-      </div>`);
+        <div style="font-size:10px;color:var(--txt3)">فيدباك${active?' • مفعّل ✓':''}</div>
+      </div>`;});
     if(unmatched>0){
       cards.push(`
       <div style="background:var(--s2);border:1px solid var(--red);border-radius:10px;padding:10px;text-align:center" title="${unmatchedNames.join(', ')}">
@@ -2091,18 +2670,20 @@ let CALLS_PAGE = 1;
 const CALLS_PZ = 30;
 
 // Load calls from Google Sheets (Calls sheet)
-async function loadCalls(){
+async function loadCalls(force=false){
+  if(CALLS_LOADED && !force){ renderCallsTable(); renderCheckoutReport(); renderStaffStats(); return; }
   try{
-    const r=await fetch(`${API}?action=getCalls&t=${Date.now()}`);
-    const j=await r.json();
-    if(j.rows) CALLS_DATA=j.rows;
-    renderCallsTable();
-    renderCheckoutReport();
-    renderStaffStats();
-  }catch(e){
-    console.log('Calls load error:',e);
-    renderCallsTable();
-  }
+    CALLS_DATA=(await loadRows('ct_calls','getCalls')).map(normCallRow);
+    CALLS_LOADED=true;
+  }catch(e){ console.log('Calls load error:',e); }
+  renderCallsTable();
+  renderCheckoutReport();
+  renderStaffStats();
+}
+
+async function loadContacts(){
+  await Promise.all([loadCalls(), loadFeedback()]);
+  renderContactsTable();
 }
 
 // Handle PDF upload - use Claude API to extract data
@@ -2161,15 +2742,16 @@ async function handleExcelUpload(input){
 }
 
 function normalizeCallStatus(s){
-  s=s.trim();
-  if(/مثبت|ثبّت|ثبت|ثبتت/i.test(s))return'ثبّت';
-  if(/تم الرد|ردت|رد/i.test(s))return'تم الرد';
-  if(/لايوجد|لا يوجد|ما رد|ماكو رد/i.test(s))return'لايوجد رد';
-  if(/مغلق/i.test(s))return'مغلق';
-  if(/مشغول/i.test(s))return'مشغول';
-  if(/مستحق|ممستحق/i.test(s))return'ممستحقه';
-  if(/رفض|تنطي رفض/i.test(s))return'رفض';
-  return s||'لايوجد رد';
+  s=String(s||'').trim();
+  if(!s) return 'لايوجد رد';
+  if(/مثبت|ثبّت|ثبت|ثبتت/.test(s))return'ثبّت';
+  if(/لا\s*يوجد|لايوجد|ما\s*رد|ماكو\s*رد|عدم\s*الرد|مايرد|ما يرد/.test(s))return'لايوجد رد';
+  if(/مغلق/.test(s))return'مغلق';
+  if(/مشغول/.test(s))return'مشغول';
+  if(/مستحق|ممستحق/.test(s))return'ممستحقه';
+  if(/رفض/.test(s))return'رفض';
+  if(/تم\s*الرد|ردت|أجاب|اجاب|^رد$/.test(s))return'تم الرد';
+  return s;
 }
 
 function readExcelFile(file){
@@ -2206,12 +2788,14 @@ function readExcelFile(file){
 // Checkout Report
 function renderCheckoutReport(){
   const tot=CALLS_DATA.length;
-  const done=CALLS_DATA.filter(r=>r.status==='تم الرد');
-  const thbt=CALLS_DATA.filter(r=>r.status==='ثبّت');
-  const noReply=CALLS_DATA.filter(r=>r.status==='لايوجد رد');
-  const closed=CALLS_DATA.filter(r=>r.status==='مغلق');
-  const busy=CALLS_DATA.filter(r=>r.status==='مشغول');
-  const pend=CALLS_DATA.filter(r=>r.status==='ممستحقه');
+  const ns=r=>normalizeCallStatus(String(r.status||''));
+  const done=CALLS_DATA.filter(r=>ns(r)==='تم الرد');
+  const thbt=CALLS_DATA.filter(r=>ns(r)==='ثبّت');
+  const noReply=CALLS_DATA.filter(r=>ns(r)==='لايوجد رد');
+  const closed=CALLS_DATA.filter(r=>ns(r)==='مغلق');
+  const busy=CALLS_DATA.filter(r=>ns(r)==='مشغول');
+  const pend=CALLS_DATA.filter(r=>ns(r)==='ممستحقه');
+  const rej=CALLS_DATA.filter(r=>ns(r)==='رفض');
   const dates=[...new Set(CALLS_DATA.map(r=>toISO(r.date)).filter(Boolean))].sort().reverse();
 
   s('CK_TOT',tot);
@@ -2222,6 +2806,7 @@ function renderCheckoutReport(){
   s('CK_OFF',closed.length);
   s('CK_BUSY',busy.length);
   s('CK_PEND',pend.length);
+  s('CK_REJ',rej.length);
   s('CK_DATE',dates[0]?fmtDate(dates[0]):'—');
   s('NR_CNT',noReply.length);
   s('DONE_CNT',done.length);
@@ -2301,6 +2886,7 @@ async function updateCallNotes(idx,notes){
     const rowIdx=d.rowIndex||idx+2;
     const params=new URLSearchParams({action:'updateCall',rowIndex:String(rowIdx),status:d.status,notes});
     await fetch(API+'?'+params.toString());
+    sbPatchRow('ct_calls',d.rowIndex,{notes});
   }catch(e){console.log('notes error',e);}
 }
 
@@ -2322,6 +2908,8 @@ async function saveBatchCalls(rows){
     });
     const json=await res.json();
     if(json.error)console.error('batch error:',json.error);
+    // ظهور فوري بـ Supabase
+    sbInsert('ct_calls',rows.map(r=>({num:String(r.num||''),name:String(r.name||''),phone:String(r.phone||''),service:String(r.service||''),date:String(r.date||''),status:normalizeCallStatus(String(r.status||'لايوجد رد')),staff:String(r.staff||''),notes:String(r.notes||''),rowIndex:''})));
   }catch(e){
     // fallback: واحد واحد
     console.log('batch failed, falling back to one-by-one');
@@ -2346,6 +2934,8 @@ async function saveCall(d){
     const res=await fetch(API+'?'+params.toString());
     const json=await res.json();
     if(json.error)console.error('saveCall error:',json.error);
+    // ظهور فوري بـ Supabase
+    sbInsert('ct_calls',{num:String(d.num||''),name:String(d.name||''),phone:String(d.phone||''),service:String(d.service||''),date:String(d.date||''),status:normalizeCallStatus(String(d.status||'لايوجد رد')),staff,notes:String(d.notes||''),rowIndex:''});
     return json;
   }catch(e){
     console.error('saveCall error:',e);
@@ -2359,6 +2949,7 @@ async function deleteCallRow(rowIndex,localId){
   try{
     const params=new URLSearchParams({action:'deleteCall',rowIndex:String(rowIndex)});
     await fetch(API+'?'+params.toString());
+    sbDelRow('ct_calls',rowIndex);
     toast('✅ تم الحذف','ok');
     // إعادة تحميل لتحديث rowIndex بعد الحذف
     setTimeout(()=>loadCalls(),1000);
@@ -2403,6 +2994,7 @@ async function updateCallStatus(idx,newStatus){
     const rowIdx=d.rowIndex||idx+2;
     const params=new URLSearchParams({action:'updateCall',rowIndex:String(rowIdx),status:newStatus});
     await fetch(API+'?'+params.toString());
+    sbPatchRow('ct_calls',d.rowIndex,{status:normalizeCallStatus(newStatus)});
     toast('✅ تم تحديث الحالة','ok');
   }catch(e){toast('⚠️ تم محلياً فقط','warn');}
 }
@@ -2414,6 +3006,7 @@ function renderCallsTable(){
 
   // فلتر
   const filtered=CALLS_DATA.filter(r=>{
+    if(STAFF_FILTER&&staffOf(r.staff)!==STAFF_FILTER)return false;
     if(fStatus&&r.status!==fStatus)return false;
     if(q&&!(r.name||'').toLowerCase().includes(q)&&!(r.phone||'').includes(q)&&!(r.staff||'').toLowerCase().includes(q))return false;
     return true;
@@ -2513,6 +3106,237 @@ function exportCallsExcel(){
   a.download=`calls_${iso()}.csv`;
   a.click();
   toast('✅ تم التصدير','ok');
+}
+
+/* ════════════════════════════════════════════
+   💬 تقرير المسجات اليومي  (DM Report)
+   ════════════════════════════════════════════ */
+let DM_MODEL=null;
+const DM_SAMPLE=`عدد مسجات الانستا ل يوم الاريعاء 209
+الليزر 61
+الابره الجديده 25
+بشره 18
+دكتوره دعاء 13
+بهاق 13
+تقشير 11
+تشققات 11
+ورديه 7
+حروق 7
+نضاره 6
+استفسارات 12
+شد 3
+شعر 3
+تحاليل 3
+فلر 3
+أزاله تاتو 2
+كوزمتك كنزي 2
+كلف 4
+بوتكس 1
+حب شباب 1
+دكتور مصطفى 1
+سيره ذاتيه 1
+سيكرت 1
+اكزوسوم 1
+** *  * * * * *
+مريم 59 ثبتت 36
+ايات 55 ثبتت 38
+ايلاف 95 ثبتت 52
+تقى 53 ثبتت من الواتساب
+فاطمه 100 ثبتت من الواتساب
+___________________________
+فيس 19
+الليزر 6
+بشره 3
+الابره الجديده 2
+دكتوره دعاء 2
+تقشير 2
+نضاره 1
+ورديه 1
+فلر 1
+شعر 1`;
+
+function dmInit(){ const d=g('DM_DATE'); if(d && !d.value){ d.value=iso(); g('DM_HTO').value=iso(); } }
+function dmDigits(t){ const ar='٠١٢٣٤٥٦٧٨٩',fa='۰۱۲۳۴۵۶۷۸۹';
+  return t.replace(/[٠-٩۰-۹]/g,d=>{let i=ar.indexOf(d);if(i>-1)return i;i=fa.indexOf(d);return i>-1?i:d;}); }
+function dmWeekday(ymd){ try{return new Intl.DateTimeFormat('ar-IQ',{weekday:'long',timeZone:'Asia/Baghdad'}).format(new Date(ymd+'T12:00:00'));}catch(e){return '';} }
+function dmCleanDay(s){ const m={'الاريعاء':'الأربعاء','الاربعاء':'الأربعاء','الاحد':'الأحد','الاثنين':'الإثنين','الثلاثاء':'الثلاثاء','الخميس':'الخميس','الجمعه':'الجمعة','السبت':'السبت'}; return m[s.replace(/\s+/g,'')]||s; }
+function dmStarSep(l){ return /\*/.test(l)&&/^[\s*•·.]+$/.test(l); }
+function dmUnderSep(l){ return /_/.test(l)&&/^[\s_\-—–=]+$/.test(l); }
+function dmChannel(line){
+  let name='قناة',type='other';
+  if(/انست|instagram/i.test(line)){name='انستغرام';type='insta';}
+  else if(/فيس|facebook/i.test(line)){name='فيسبوك';type='fb';}
+  else if(/واتس|whats/i.test(line)){name='واتساب';type='wa';}
+  else if(/تيك\s*توك|tiktok/i.test(line)){name='تيك توك';type='other';}
+  else if(/سناب|snap/i.test(line)){name='سناب شات';type='other';}
+  else{ let n=line.replace(/\d+/g,'').replace(/عدد|مسجات|رسائل/g,'').replace(/ل?\s*يوم.*$/,'').trim(); if(n)name=n; }
+  let day=null; const dm=line.match(/يوم\s+([^\d]+?)(?=\s*\d|$)/); if(dm)day=dmCleanDay(dm[1].trim());
+  let total=null; const nums=line.match(/\d+/g); if(nums)total=parseInt(nums[nums.length-1],10);
+  return {name,type,day,total};
+}
+function dmCat(line){ const m=line.match(/^(.*?)[\s:：،.\-]*(\d+)\s*$/); if(!m)return null; const n=m[1].trim(); if(!n)return null; return {name:n,count:parseInt(m[2],10)}; }
+function dmStaff(line){
+  if(!/ثبت/.test(line))return null;
+  const m=line.match(/^(.*?)\s+(\d+)\s*ثبت[ةت]?\s*(.*)$/); if(!m)return null;
+  const name=m[1].trim(),num=parseInt(m[2],10),rest=(m[3]||'').trim();
+  const nm=rest.match(/^(\d+)/);
+  if(nm)return {name,received:num,confirmed:parseInt(nm[1],10),source:null};   // محادثات + تثبيت (انستا/فيس)
+  // واتساب: الرقم هو عدد التثبيت فقط — المحادثات غير معروفة
+  let src=/واتس/.test(rest)?'واتساب':(rest.replace(/^من\s+/,'').replace(/^ال/,'').trim()||'واتساب');
+  return {name,received:null,confirmed:num,source:src};
+}
+function dmParseReport(text){
+  const lines=text.split(/\r?\n/).map(s=>dmDigits(s).trim()).filter(s=>s.length);
+  const blocks=[]; let cur=[];
+  for(const l of lines){ if(dmStarSep(l)||dmUnderSep(l)){ if(cur.length){blocks.push(cur);cur=[];} continue; } cur.push(l); }
+  if(cur.length)blocks.push(cur);
+  const channels=[],staff=[]; let day=null;
+  for(const b of blocks){
+    const sc=b.filter(l=>/ثبت/.test(l)).length;
+    if(sc>=Math.max(1,Math.ceil(b.length/2))){ b.forEach(l=>{const x=dmStaff(l);if(x)staff.push(x);}); }
+    else{
+      const info=dmChannel(b[0]); if(info.day&&!day)day=info.day;
+      const cats=[];
+      for(let i=1;i<b.length;i++){ const l=b[i]; if(/ثبت/.test(l)){const x=dmStaff(l);if(x){staff.push(x);continue;}} const c=dmCat(l); if(c)cats.push(c); }
+      channels.push({name:info.name,type:info.type,total:info.total!=null?info.total:cats.reduce((a,c)=>a+c.count,0),categories:cats});
+    }
+  }
+  return {day,channels,staff};
+}
+function dmCombined(m){ const map={}; m.channels.forEach(ch=>ch.categories.forEach(c=>map[c.name]=(map[c.name]||0)+c.count)); return Object.entries(map).map(([name,count])=>({name,count})).sort((a,b)=>b.count-a.count); }
+
+function dmParse(){
+  const text=(g('DM_RAW').value||'').trim();
+  if(!text){ toast('❌ الصقي التقرير أول','err'); return; }
+  const m=dmParseReport(text);
+  if(!m.channels.length && !m.staff.length){ toast('❌ ما قدرت أقرأ التقرير','err'); return; }
+  DM_MODEL=m;
+  g('DM_DAYHINT').textContent=m.day?('• '+m.day):'';
+  g('DM_SAVE').disabled=false;
+  dmRender(m);
+  toast('✅ تم التحليل','ok');
+}
+function dmRender(m){
+  const comb=dmCombined(m);
+  const totalMsgs=m.channels.reduce((a,c)=>a+c.total,0);
+  const top=comb[0]||{name:'—',count:0};
+  const confAll=m.staff.reduce((a,s)=>a+(s.confirmed||0),0);            // كل التثبيت (انستا/فيس/واتساب)
+  const bothN=m.staff.filter(s=>s.received!=null && s.confirmed!=null);  // عندهم محادثات + تثبيت
+  const confBoth=bothN.reduce((a,s)=>a+s.confirmed,0);
+  const recvBoth=bothN.reduce((a,s)=>a+s.received,0);
+  const rate=recvBoth?Math.round(confBoth/recvBoth*100):0;
+  const date=g('DM_DATE').value, day=m.day||dmWeekday(date);
+  const chColors={insta:'var(--blu)',fb:'var(--pur)',wa:'var(--grn)',other:'var(--ora)'};
+
+  let h='';
+  // KPIs
+  h+=`<div class="kpis">
+    <div class="kpi"><div class="kl">إجمالي المسجات</div><div class="kv" style="color:var(--txt)">${totalMsgs}</div><div class="ks">${day||''} ${date||''}</div></div>
+    <div class="kpi"><div class="kl">أكثر استفسار</div><div class="kv" style="color:var(--pur);font-size:20px;margin-top:6px">${top.name}</div><div class="ks">${top.count} استفسار</div></div>
+    <div class="kpi"><div class="kl">إجمالي التثبيت</div><div class="kv" style="color:var(--grn)">${confAll}</div><div class="ks">انستا + فيس + واتساب</div></div>
+    <div class="kpi"><div class="kl">نسبة التثبيت</div><div class="kv" style="color:${rate>=50?'var(--grn)':'var(--ora)'}">${rate}%</div><div class="ks">${confBoth} من ${recvBoth} محادثة (انستا/فيس)</div></div>
+    <div class="kpi"><div class="kl">أنواع الاستفسار</div><div class="kv" style="color:var(--blu)">${comb.length}</div><div class="ks">${m.channels.length} قنوات</div></div>
+  </div>`;
+
+  // channels
+  h+=`<div class="g3" style="margin-bottom:12px">`;
+  m.channels.forEach(c=>{ const col=chColors[c.type]||'var(--ora)'; const share=totalMsgs?Math.round(c.total/totalMsgs*100):0;
+    h+=`<div class="card"><div class="ct">${c.name}</div><div class="kv" style="font-family:var(--font2);font-size:40px;font-weight:900;color:${col};line-height:1;margin:6px 0 2px">${c.total}</div><div class="cs" style="margin:0">${share}% من الإجمالي · ${c.categories.length} نوع استفسار</div></div>`; });
+  h+=`</div>`;
+
+  // top inquiries (reason-bar style)
+  const mx=comb.length?comb[0].count:1;
+  h+=`<div class="g2"><div class="card"><div class="ct">🔝 أكثر الاستفسارات</div><div class="cs">مجموع كل القنوات</div>`;
+  comb.slice(0,12).forEach((c,i)=>{
+    h+=`<div class="rb"><div class="rn">${i+1}</div><div class="rl" title="${c.name}">${c.name}</div><div class="rbg"><div class="rbf" style="width:${Math.max(3,c.count/mx*100)}%;background:linear-gradient(90deg,var(--blu),#7b5cf7)"></div></div><div class="rn" style="text-align:left;color:var(--txt)">${c.count}</div></div>`;
+  });
+  h+=`</div>`;
+
+  // staff
+  h+=`<div class="card"><div class="ct">👥 أداء البنات (تثبيت الحجوزات)</div><div class="cs">الواصل = المحادثات · المثبت = الحجوزات المؤكدة</div>`;
+  if(m.staff.length){
+    const maxConf=Math.max(...m.staff.map(s=>s.confirmed||0),1);
+    h+=`<div style="overflow-x:auto"><table style="min-width:0"><thead><tr><th>الموظفة</th><th>المحادثات</th><th>التثبيت</th><th>النسبة</th></tr></thead><tbody>`;
+    m.staff.forEach(s=>{
+      const confBar=`<div class="rbg" style="margin-top:4px"><div class="rbf" style="width:${(s.confirmed||0)/maxConf*100}%;background:var(--grn)"></div></div>`;
+      let recvCell,rateCell;
+      if(s.received!=null){
+        const r=s.received?Math.round(s.confirmed/s.received*100):0;
+        const col=r>=60?'var(--grn)':(r>=40?'var(--yel)':'var(--red)');
+        recvCell=`<b style="font-family:var(--font2);font-weight:900">${s.received}</b>`;
+        rateCell=`<span style="color:${col};font-weight:900">${r}%</span>`;
+      } else {
+        recvCell=`<span class="tg tg-d">— غير معروف</span>`;
+        rateCell=`<span class="tg tg-r">${s.source}</span>`;
+      }
+      h+=`<tr><td><b>${s.name}</b></td><td>${recvCell}</td><td><b style="font-family:var(--font2);font-size:14px;color:var(--grn)">${s.confirmed}</b>${confBar}</td><td>${rateCell}</td></tr>`;
+    });
+    h+=`</tbody></table></div>`;
+  } else { h+=`<div class="empty">لا توجد بيانات موظفات في هذا التقرير</div>`; }
+  h+=`</div></div>`;
+
+  g('DM_OUT').innerHTML=h;
+}
+function dmSample(){ g('DM_RAW').value=DM_SAMPLE; dmParse(); }
+function dmClear(){ g('DM_RAW').value=''; DM_MODEL=null; g('DM_SAVE').disabled=true; g('DM_DAYHINT').textContent=''; g('DM_OUT').innerHTML='<div class="empty">📊 الصقي التقرير واضغطي «تحليل» ليظهر الداشبورد هنا.</div>'; }
+
+async function dmSave(){
+  if(!DM_MODEL){ toast('❌ حلّلي التقرير أول','err'); return; }
+  const date=g('DM_DATE').value; if(!date){ toast('❌ اختاري التاريخ','err'); return; }
+  const btn=g('DM_SAVE'); btn.disabled=true; const old=btn.textContent; btn.textContent='جاري الحفظ…';
+  const day=DM_MODEL.day||dmWeekday(date);
+  // جهّز الصفوف
+  const sumRows=[], catRows=[], staffRows=[];
+  DM_MODEL.channels.forEach(c=>{
+    sumRows.push({date, day, channel:c.name, total:Number(c.total)||0});
+    (c.categories||[]).forEach(ct=>catRows.push({date, channel:c.name, name:ct.name, count:Number(ct.count)||0}));
+  });
+  (DM_MODEL.staff||[]).forEach(s=>staffRows.push({date, name:s.name,
+    received:(s.received==null?null:Number(s.received)), confirmed:Number(s.confirmed)||0, source:s.source||''}));
+  try{
+    const H={ apikey:SB_KEY, Authorization:'Bearer '+SB_KEY, 'Content-Type':'application/json', Prefer:'return=minimal' };
+    const enc=encodeURIComponent(date);
+    // امسح بيانات نفس اليوم (استبدال) من الجداول الثلاثة
+    await Promise.all([
+      fetch(`${SB_URL}/rest/v1/ct_dm_summary?date=eq.${enc}`,    {method:'DELETE', headers:H}),
+      fetch(`${SB_URL}/rest/v1/ct_dm_categories?date=eq.${enc}`, {method:'DELETE', headers:H}),
+      fetch(`${SB_URL}/rest/v1/ct_dm_staff?date=eq.${enc}`,      {method:'DELETE', headers:H}),
+    ]);
+    // أدخل الجديد
+    const ins=async(table,rows)=>{ if(!rows.length)return; const r=await fetch(`${SB_URL}/rest/v1/${table}`,{method:'POST',headers:H,body:JSON.stringify(rows)}); if(!r.ok)throw new Error(table+' '+r.status+' '+(await r.text()).slice(0,120)); };
+    await ins('ct_dm_summary', sumRows);
+    await ins('ct_dm_categories', catRows);
+    await ins('ct_dm_staff', staffRows);
+    toast('✅ تم الحفظ — يظهر فوراً','ok');
+    // نسخة احتياطية بصمت لـ Google Sheets (لا توقف العملية لو فشلت)
+    try{
+      const payload={ date, dayName:day, channels:DM_MODEL.channels.map(c=>({name:c.name,total:c.total,categories:c.categories})), staff:DM_MODEL.staff };
+      fetch(API+'?action=addDMReport&payload='+encodeURIComponent(JSON.stringify(payload))).catch(()=>{});
+    }catch(_){}
+    if(g('DM_HFROM')&&g('DM_HTO')){ if(!g('DM_HFROM').value)g('DM_HFROM').value=date; if(!g('DM_HTO').value)g('DM_HTO').value=date; dmHistory(); }
+  }catch(e){ toast('❌ '+e.message,'err'); } finally { btn.disabled=false; btn.textContent=old; }
+}
+
+async function dmHistory(){
+  const from=g('DM_HFROM').value, to=g('DM_HTO').value, box=g('DM_HIST');
+  box.innerHTML='<div class="empty">جاري التحميل…</div>';
+  try{
+    let p=''; if(from)p+=`&date=gte.${encodeURIComponent(from)}`; if(to)p+=`&date=lte.${encodeURIComponent(to)}`;
+    const [summary,categories]=await Promise.all([ sbGet('ct_dm_summary',p), sbGet('ct_dm_categories',p) ]);
+    const days={}; (summary||[]).forEach(x=>days[x.date]=(days[x.date]||0)+(Number(x.total)||0));
+    const dates=Object.keys(days).sort();
+    if(!dates.length){ box.innerHTML='<div class="empty">📭 لا توجد بيانات محفوظة لهذه الفترة.</div>'; return; }
+    const mx=Math.max(...dates.map(d=>days[d]),1);
+    let h=`<div class="ct" style="margin-bottom:10px">إجمالي المسجات يومياً</div>`;
+    dates.forEach(d=>{ h+=`<div class="rb"><div class="rl">${String(d).slice(5)}</div><div class="rbg"><div class="rbf" style="width:${Math.max(3,days[d]/mx*100)}%;background:linear-gradient(90deg,var(--grn),var(--blu))"></div></div><div class="rn" style="text-align:left;color:var(--txt)">${days[d]}</div></div>`; });
+    const cm={}; (categories||[]).forEach(c=>cm[c.name]=(cm[c.name]||0)+(Number(c.count)||0));
+    const cats=Object.entries(cm).map(([name,count])=>({name,count})).sort((a,b)=>b.count-a.count).slice(0,10);
+    if(cats.length){ const mc=cats[0].count;
+      h+=`<div class="ct" style="margin:16px 0 10px">أكثر الاستفسارات خلال الفترة</div>`;
+      cats.forEach((c,i)=>{ h+=`<div class="rb"><div class="rn">${i+1}</div><div class="rl" title="${c.name}">${c.name}</div><div class="rbg"><div class="rbf" style="width:${Math.max(3,c.count/mc*100)}%;background:linear-gradient(90deg,var(--blu),#7b5cf7)"></div></div><div class="rn" style="text-align:left;color:var(--txt)">${c.count}</div></div>`; });
+    }
+    box.innerHTML=h;
+  }catch(e){ box.innerHTML=`<div class="empty">❌ تعذّر جلب السجل: ${e.message}</div>`; }
 }
 </script>
 </body>
