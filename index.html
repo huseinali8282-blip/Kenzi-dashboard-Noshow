@@ -1398,7 +1398,7 @@ let CALLS_LOADED=false,FB_LOADED=false,LR_LOADED=false;
 let STAFF_FILTER='';
 let FB_STAFF_FILTER='';
 // أسماء الموظفات المعروفة — أي قيمة غيرها بعمود الموظف تُعتبر «مجهول المصدر»
-const KNOWN_STAFF=['تمارا','زهراء','فاطمة','حنين','تقى','عبير','رانيا','رسل'];
+const KNOWN_STAFF=['تمارا','زهراء','فاطمة','حنين','تقى','عبير','رانيا','رسل','كوثر'];
 const UNKNOWN_STAFF='مجهول المصدر';
 function staffOf(v){ const s=(v==null?'':String(v)).trim(); return KNOWN_STAFF.includes(s)?s:UNKNOWN_STAFF; }
 // تصحيح الصفوف المزاحة بالمكالمات: لو «الحالة» فيها تاريخ → الحالة الحقيقية بعمود الموظف، والتاريخ بعمود الحالة، والخدمة بعمود التاريخ
@@ -1794,7 +1794,7 @@ const WL_SPEED_RANK={A:0,B:1,C:2};
 const WL_PRIO_RANK={VIP:0,'حالي':1,'جديد':2};
 const WL_SERVICES=['ليزر إزالة الشعر','ليزر الجسم الكامل','ليزر الوجه','جلسة نضارة','استشارة جلدية','استشارة ليزر','حقن بوتوكس','حقن فلر','جلسات علاج البشرة'];
 const WL_STATUSES=['منتظر','تم التواصل','تم الحجز','رفض الموعد','لا يرد'];
-const WL_STAFF=['غفران','زينب','بتول','طيبة','ايلاف','مريم','ايات','تمارا','زهراء','فاطمة','حنين','تقى','عبير','رانيا','رسل'];
+const WL_STAFF=['غفران','زينب','بتول','طيبة','ايلاف','مريم','ايات','كوثر','تمارا','زهراء','فاطمة','حنين','تقى','عبير','رانيا','رسل'];
 const WL_ACTIVE=['منتظر','تم التواصل','لا يرد']; // غير محجوز وغير مرفوض
 
 async function loadWaitlist(){
@@ -2114,7 +2114,9 @@ function renderFollowup(){
   const isNoShow=r=>/no\s*show/i.test(t(r.caseType));
   const isCancel=r=>/cancel|إلغاء|الغاء/i.test(t(r.caseType));
   const today=new Date(); const wk=new Date(today.getTime()-7*864e5);
-  const inWeek=r=>{const iso=toISO(r.date); if(!iso)return false; const d=new Date(iso); return d>=wk&&d<=today;};
+  const todayISO=iso();
+  const wkISO=`${wk.getFullYear()}-${String(wk.getMonth()+1).padStart(2,'0')}-${String(wk.getDate()).padStart(2,'0')}`;
+  const inWeek=r=>{const s=toISO(r.date); return !!s && s>=wkISO && s<=todayISO;};
   // تكرار الغياب للأولوية
   const freq={}; data.forEach(r=>{const n=t(r.patientName); if(n)freq[n]=(freq[n]||0)+1;});
   const prio=r=>{ let s=0;
